@@ -45,20 +45,33 @@
         </section>
 
         <section>
-          <h2>Hosting</h2>
-          <p>
-            Where your app lives
-          </p>
-
-          <aside class="notes">
-          </aside>
-        </section>
-
-        <section>
           <section>
-            <img src="images/heroku_logo.png">
+            <h2>Hosting</h2>
             <p>
-              The Monster
+              Where your app lives
+            </p>
+
+            <aside class="notes">
+            </aside>
+          </section>
+          <section>
+            <h2>Roll your own</h2>
+            <h3 class="fragment">...but that's scary!</h3>
+          </section>
+          <section>
+            <h2>Server Options</h2>
+            <ul style="list-style:none;text-align:center;">
+              <li class="fragment"><img src="images/thin.png"></li>
+              <li class="fragment"><img src="images/puma-logo.png"></li>
+              <li class="fragment"><img src="images/unicorn.png"></img><span class="fragment" style="position:fixed;" data-fragment-index="5">* Recommended by Ben</span></li>
+              <li class="fragment"><img src="images/passenger.png"  style="width: 300px; height:100px"></li>
+            </ul> 
+          </section>
+          <section>
+            <h2>Get someone else to do it...<h2>
+            <img src="images/heroku_logo.png" class="fragment">
+            <p class="fragment">
+              The <span style="color:green;">Monster</span> of Managed Hosting
             </p>
           </section>
           <section>
@@ -75,55 +88,224 @@
             <img class="fragment fade-in" src="images/heroku.png">
             <h3 class="fragment fade-in">Sure...</h3>
           </section>
+          <section>
+            <h2>A trial</h2>
+            <h3 class="fragment fade-in">Sure...</h3>
+          </section>
+
+          <section>
+            <h2>The Actual Steps</h2>
+            <ul>
+              <li><a href="https://api.heroku.com/signup/devcenter">Sign up</a></li>
+              <li>Download and install the <a href="https://devcenter.heroku.com/articles/quickstart#step-2-install-the-heroku-toolbelt">Heroku Toolbelt</a></li>
+              <li style="list-style:none;">
+                <pre>
+                  <code>
+> Forge:Projects bennett$ heroku login
+> Enter your Heroku credentials.
+> Email: the.benstevenson@gmail.com
+> Password (typing will be hidden): H4Ckz0r5
+> Authentication successful.
+                  </code>
+                </pre>
+              </li>
+            </ul>
+          </section>
+
+        </section>
+
+
+        <section>
+          <section>
+            <h2>OpenStack</h2>
+            <p>Sounds sketchy...</p>
+          </section>
+          <section>
+            <h2>Backers</h2>
+
+          </section>
+          <section>
+            <h2>All 2+ years ago, anything new?</h2>
+            <ul>
+              The idea of Dockers, self contained code.
+            </ul>
+          </section>
         </section>
 
         <section>
-          <h2>Slides</h2>
+          <h2>ORM</h2>
           <p>
-            Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
+            Just ActiveRecord?
           </p>
         </section>
 
         <section>
-          <h2>Point of View</h2>
-          <p>
-            Press <strong>ESC</strong> to enter the slide overview.
-          </p>
-          <p>
-            Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-          </p>
+          <section>
+            <h2>Performance: Threading and the GIL</h2>
+            <p>
+              So there's this one little fact... <span class="fragment">MRI Ruby doesn't do multi-threads.</span>
+            </p>
+          </section>
+
+          <section>
+            <h2>It doesn't matter!</h2>
+            <ul>
+              <li>More than 1 Ruby.</li>
+              <li class="fragment">JRuby</li>
+            </ul>
+            <aside>
+              There's MRI( Matz Ruby Interpreter), JRuby runs on the Java Virtual Machine
+            </aside>
+          </section>
+
+          <section>
+            <h2>We've got options!</h2>
+            <div class="fragment">
+              <img src="images/net-joke.png">
+            </div>
+            <p class="fragment">
+              No real options. All boils down to the same CLR VM
+            </p>
+          </section>
+
+          <section>
+            <h2>Makes it easy to do the right thing</h2>
+            <ul>
+              <li>CDN Support built into framework</li>
+              <li>Turbolinks</li>
+              <li>Remove the views.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Where's the real cost in development?</h2>
+            <ul>
+              <li>Developers, who in essence are people.</li>
+              <li>You can build applications quicker, more streamlined.</li>
+              <li>If you're chops are up to the task, without leaving the same terminal.</li>
+            </ul>
+          </section>
         </section>
 
         <section>
-          <h2>Works in Mobile Safari</h2>
-          <p>
-            Try it out! You can swipe through the slides and pinch your way to the overview.
-          </p>
+          <section>
+            <h2>Cost</h2>
+          </section>
+          <section>
+            <h2>Pros</h2>
+            <ul>
+              <li>Free</li>
+              <li class="fragment">Questions...?</li>
+            </ul>
+          </section>
+          <section> 
+            <h2>Ok fine that was mildly loaded.</h2>
+            <ul>
+              <li>Built open on all fronts.</li>
+              <li>Swap and play.</li>
+              <li class="fragment">Options... my god the options.
+                <ul>
+                  <li>Don't like VI? Use Emacs.</li>
+                  <li>Don't like Emacs? Use Sublime or Text Mate</li>
+                  <li>I need the IDE look! Use RubyMine</li>
+                </ul>
+              </li>
+
+            </ul>
+          </section>
+          <section>
+            <h2>But I like paying for my editors!</h2>
+            <h3>Built for Ruby, not the entire MS Family</h3>
+
+          </section>
+          <section> 
+            <h2>With Windows</h2>
+            <ul>
+              <li>Would you like a GUI with that?</li>
+            </ul>
+            <img class="fragment" src="images/clippy.png" style="width:200px; float:right;">
+          </section>
         </section>
 
         <section>
-          <h2>Marvelous Unordered List</h2>
-          <ul>
-            <li>No order here</li>
-            <li>Or here</li>
-            <li>Or here</li>
-            <li>Or here</li>
-          </ul>
-        </section>
+          <section>
+            <h2>Editor Templating vs. Scaffolding</h2>
+          </section>
+          <section>
+            <h2>On Rails: Options</h2>
+            <ul>
+              <li>Stick with normal form helpers, they work.</li>
+              <li>Use an alternative library
+                <ul>
+                  <li><a href="https://github.com/justinfrench/formtastic">justinfrench/formtastic</a></li>
+                  <li><a href="https://github.com/plataformatec/simple_form">platformatec/simple_form</a></li>
+                </ul>
+              </li>
+              <li>Alterntative form builders can be customized for speicified CSS Frameworks</li>
+                <ul>
+                  <li>Both support Bootstrap 2-3(beta)</li>
+                </ul>
+            </ul>
+          </section>
+          <section>
+            <h2>A (Contrived) Example!</h2>
+            <div class="fragment">
+              <h3><a href="https://github.com/benstevenson/meetup_trial_net/blob/master/meetup_trial_net/Views/Account/Login.cshtml">Default implementation in .NET</a></h3>
+              <pre>
+                <code>
+  @Html.ValidationSummary(true)
+  <div class="form-group">
+      @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+      <div class="col-md-10">
+          @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+          @Html.ValidationMessageFor(m => m.UserName)
+      </div>
+  </div>
+                </code>
+              </pre>
+            </div>
+            <div class="fragment">
+              <h3><a href="https://github.com/nickl-/formtastic-bootstrap3">Formtastic (w/ Bootstrap 3 Support)</a></h3>
+              <pre>
+                <code>
+  <%= f.semantic_errors %>
+  <%= f.inputs do %>
+    <%= f.input :username %>
+  <% end %>
+                </code>
+              </pre>
+            </div>
+          </section>
+          <section>
+            <h2>Surely a nightmare to configure</h2>
+            <pre class="fragment">
+              <code>
+gem 'formtastic-bootstrap'
 
-        <section>
-          <h2>Fantastic Ordered List</h2>
-          <ol>
-            <li>One is smaller than...</li>
-            <li>Two is smaller than...</li>
-            <li>Three!</li>
-          </ol>
-        </section>
+# config/initializers/formtastic.rb
+Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
 
+# app/assets/stylesheets/application.css
+*= require formtastic-bootstrap
+              </code>
+            </pre>
+          </section>
+          <section>
+            <h2>Once again options...</h2>
+            <h3>Or with <a href="http://foundation.zurb.com/">Zurb Foundation</a></h3>
+            <pre>
+              <a href="https://github.com/aliang/formtastic-zurb-foundation">gem 'formtastic-zurb-foundation'</a>
+            </pre>
+            <h3>Or with <a href="https://github.com/plataformatec/simple_form">simple_form</a></h3>
+            <pre>
+              <a href="https://github.com/plataformatec/simple_form#bootstrap">rails generate simple_form:install --bootstrap</a>
+            </pre>
+            <h3>Or with simple_form and Zurb</h3>
+            <pre>
+              <a href="https://github.com/plataformatec/simple_form#zurb-foundation-3">rails generate simple_form:install --foundation</a>
+            </pre>
+          </section>
 
-        <section>
-          <h1>THE END</h1>
-          <h3>BY Hakim El Hattab / hakim.se</h3>
         </section>
 
       </div>
