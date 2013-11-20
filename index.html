@@ -97,6 +97,9 @@
             </ul>
             <aside class="notes">
               Expandable to whatever your needs are. More add-ons than you can shake a stick at! Redis, RabbitMQ, SendGrid, and 143 more listed on the site. Monitoring, media, payment, logging, caching.
+
+              Pricing is high, for Ruby hosting... which is just shy of 3K a month for 20 2X web dynos and 20 2X workers. Approximate.
+              But that's about normal when you compare against Windows Hosting at about 66% the cost of a comparable setup with Windows.
             </aside>
           </section>
           <section>
@@ -127,7 +130,6 @@
           <section>
             <h2>Or use... anything you can build...</h2>
             <ul>
-              <li class="fragment">Pretty serious about that.</li>
               <li class="fragment">
                 <h3>Platform as a Service(PaaS)</h3>
                 <ul>
@@ -156,24 +158,35 @@
           <section>
             <h2>Other methods for doing things</h2>
             <ul>
-              <li>Any VM, physical box, Raspberry Pi, some mobile phones, some server infrastructures...</li>
               <li><a href="https://github.com/dotcloud/docker">Docker</a></li>
               <li><a href="https://github.com/puppetlabs/puppet">Puppet</a></li>
               <li><a href="https://github.com/opscode/chef">Chef</a></li>
               <li><a href="http://www.vagrantup.com/">Vagrant</a></li>
+              <li class="fragment">Any VM, physical box, Raspberry Pi, some mobile phones, some server infrastructures...</li>
             </ul>
+            <aside class='notes'>
+              If you're not a sysadmin, because we're good, damn good, but not at everything. Offload the work to libraries to help manage your hoard of Linux VMs and keep the up to date, secure and configured the same.
+
+              But the number of ways you can deploy applications in Ruby is astonishing and because of that you've probably never head of some of them. 
+            </aside>
           </section>
+
+          <section>
+            <h2>In comparison</h2>
+
+            <img class="fragment" src="images/ie_paste.jpg">
+
+            <aside class="notes">
+              It took two hours, 3 restarts, countless dependencies, one really nice install screen to even get Visual Studio express installed and functional. Then dealing with the eye-gougingly magical IIS not wanting to connect outside of the VM, another hour to figure out git integration in Visual Studio Express, failing at that, and installing the Github Windows client instead.
+              Oh and one forced install of IE 10. Yeah things worked great picking things up.
+            </aside>
+          </section>
+
         </section>
 
         <section>
           <section>
-            <h2>ORM</h2>
-            <p>
-              Just ActiveRecord?
-            </p>
-            <p>
-              Progress has been made. Options are available.
-            </p>
+            <h2>Active Record</h2>
           </section>
           <section>
             <h2>Some things weren't possible (or at least easy in the past)</h2>
@@ -197,27 +210,41 @@ User.where(name:"Jane").first
               </code>
             </pre>
             <p>Simple, straight-forward, does it's job.</p>
+            <aside>
+              Model classes represent tables and instances are rows, 1:1. 
+            </aside>
           </section>
-
+          <section>
+            <h2>Convention over Configuration</h2>
+            <p>
+              User(model) = users(table name)
+            </p>
+            <p class="fragment">
+              User::Role(model) = user_roles(table name)
+            </p>
+            <aside class="notes">
+              String inflections control how and  
+            </aside>
+          </section>
           <section>
             <h2>schema.rb</h2>
             <pre>
+              rails g model user name:string
+              rails g model family name:string
               <code>
-ActiveRecord::Schema.define(version: 20131116000438) do
+ActiveRecord::Schema.define(version: 20131120045647) do
+
+  create_table "families", force: true do |t|
+    t.string "name"
+  end
 
   create_table "users", force: true do |t|
-    t.string   "name", null:false
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "family", force:true do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
 end
+
               </code>
             </pre> 
           </section>
@@ -238,6 +265,31 @@ end
             </pre>
           </section>
           <section>
+            <h2>Result</h2>
+            <pre>
+              <code>
+ActiveRecord::Schema.define(version: 20131120045647) do
+
+  create_table "families", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email"
+    t.integer  "family_id"
+  end
+
+  add_index "users", ["family_id"], name: "index_users_on_family_id"
+
+end
+
+              </code>
+            </pre>
+          </section>
+          <section>
             <h2>Arel</h2>
             <pre>
               <code>
@@ -251,6 +303,7 @@ end
               Just like LINQ, without the GUI
             </aside>
           </section>
+
           <section>
             <h2>Alternatives</h2>
             <ul>
@@ -259,7 +312,10 @@ end
             </ul>
             <aside class="notes">
               Sequel is extremely close to Active Record in terms of syntax, however has been built with much more emphasis on performance.
-              ROM is a new one but will be built much in the same manner as Datamapper was, which is essentially the same idea as Contexts in .NET EF
+
+              ROM is a new one but will be built much in the same manner as Datamapper was, which is essentially the same idea as Contexts in .NET EF.
+              Where database interactions are managed through essentially object stores instead of object classes know how to connect and build/persist objects.
+              Much like EF objects can be composed of differing data tables, Complex Types.
             </aside>
           </section>
 <!--           <section>
@@ -305,7 +361,7 @@ jane = env[:users].restrict(name: 'Jane').one
 
         <section>
           <section>
-            <h2>Performance: Threading and the GIL</h2>
+            <h2>Performance</h2>
             <p>
               So there's this one little fact... <span class="fragment">MRI doesn't do multi-threading.</span>
             </p>
@@ -324,10 +380,8 @@ jane = env[:users].restrict(name: 'Jane').one
           </section>
 
           <section>
-            <h2>We've got options!</h2>
-            <div class="fragment">
-              <img src="images/net-joke.png">
-            </div>
+            <h2>We've got options too!</h2>
+            <img src="images/net-joke.png">
             <p class="fragment">
               All boils down to the same CLR
             </p>
@@ -368,6 +422,7 @@ jane = env[:users].restrict(name: 'Jane').one
               <li class="fragment">Questions...?</li>
             </ul>
           </section>
+
           <section> 
             <h2>Ok fine that was mildly loaded.</h2>
             <ul>
@@ -389,6 +444,10 @@ jane = env[:users].restrict(name: 'Jane').one
             </div>
             <aside class="notes">
               It's got everything, since the last time I tried it which was a couple years ago. RSpec, Minitest integration. Code completion as well as can be expected. Even RubyMotion support if you're doing a iOS application.
+
+              When compared to Visual Studio, Windows, IIS hosting... actually I have no idea what the damn things cost for a single person. I've seen figures ranging from 500$ for a single Visual Studio license, and 250$ for a single Windows install. Does someone here know what they cost for a team? Probably not unless you're a sales rep for Microsoft.  
+
+              You can't even find the information on the site
             </aside>
           </section>
           <section>
@@ -421,6 +480,8 @@ jane = env[:users].restrict(name: 'Jane').one
 
             <aside class="notes">
               Specs passing.
+
+              The JVM is the biggest competitor to the CLR, and it can be used as a long-term evolution plan in Rails. 
             </aside>
           </section>
         </section>
@@ -430,9 +491,22 @@ jane = env[:users].restrict(name: 'Jane').one
             <h2>Editor Templating vs. Formtastic</h2>
           </section>
           <section>
-            <h2>On Rails: Options</h2>
+            <h2>On Rails</h2>
             <ul>
               <li>Stick with normal form helpers, they work.</li>
+            </ul>
+            <pre>
+              <code>
+<div class="field">
+  <%= f.label :name %><br>
+  <%= f.text_field :name %>
+</div>
+              </code>
+            </pre>
+          </section>
+          <section>
+            <h2>Options!</h2>
+            <ul>
               <li>Use an alternative library
                 <ul>
                   <li><a href="https://github.com/justinfrench/formtastic">justinfrench/formtastic</a></li>
@@ -488,7 +562,7 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
               </code>
             </pre>
           </section>
-<!--           <section>
+          <section>
             <h2>Formtastic: Once again options...</h2>
             <h3>Or with <a href="http://foundation.zurb.com/">Zurb Foundation</a></h3>
             <pre>
@@ -513,7 +587,7 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
                 *= require topcoat/mobile-light
               </code>
             </pre>
-          </section> -->
+          </section>
 
         </section>
 
