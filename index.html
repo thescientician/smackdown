@@ -6,8 +6,8 @@
 
     <title>Ruby on Rails 4 vs. .NET MVC 5 Smackdown</title>
 
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="Ruby on Rails 4 vs. .NET MVC 5 Smackdown, Rails Slides">
+    <meta name="author" content="Ben Stevenson">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -36,12 +36,21 @@
       <div class="slides">
         <section>
           <h1>Ruby on Rails 4 vs. .NET MVC 5 Smackdown</h1>
-          <h3>November 2013, YYC Ruby Meetup</h3>
+          <h3>November 2013, YYC Ruby/.NET Meetup</h3>
           <p>
             <small>Ben Stevenson &amp; Simon Timms/ <a href="http://twitter.com/bennett_stevens">@bennett_stevens</a> <a href="http://twitter.com/stimms">@stimms</a> </small>
           </p>
         </section>
-
+        <section>
+          <h2>Fight!</h2>
+          <ul>
+            <li>Hosting</li>
+            <li>ORM</li>
+            <li>Cost</li>
+            <li>Performance</li>
+            <li>Editor Templating vs. Formtastic</li>
+          </ul>
+        </section>
         <section>
           <section>
             <h2>Hosting</h2>
@@ -53,7 +62,7 @@
             </ul>
 
             <aside class="notes">
-
+              This is important, there are so many ways one can choose to deploy production applications, 
             </aside>
           </section>
           <section>
@@ -62,7 +71,7 @@
               <li class="fragment"><img src="images/thin.png"></li>
               <li class="fragment"><img src="images/puma-logo.png"></li>
               <li class="fragment"><img src="images/unicorn.png"></li>
-              <li class="fragment"><img src="images/passenger.png"  style="width: 300px; height:100px"></li>
+              <li class="fragment"><img src="images/passenger.png"  style="width: 300px; height:100px;"></li>
             </ul>
             <aside class="notes">
 
@@ -108,11 +117,15 @@
 > Password (typing will be hidden): H4Ckz0r5
 > Authentication successful.
                 </pre>
+                <pre>
+> Forge:Projects bennett$ heroku create windnoes
+> Forge:Projects bennett$ git push heroku master
+                </pre>
               </li>
             </ul>
           </section>
           <section>
-            <h2>Or use... anything you want...</h2>
+            <h2>Or use... anything you can build...</h2>
             <ul>
               <li class="fragment">Pretty serious about that.</li>
               <li class="fragment">
@@ -136,7 +149,7 @@
               </li>
             </ul>
             <aside class="notes">
-              The nice thing about Ruby is that there is most likely an implementation on any hosting provider in the known universe. 
+              The nice thing about Ruby is that there is most likely an implementation possible on any hosting provider in the known universe, often more than one.
             </aside>
 
           </section>
@@ -167,24 +180,76 @@
             <ul>
               <li>Cool to love/hate with AR</li>
               <li>Too much magic</li>
-              <li>Not performance orientated</li>
               <li>OMG horrible syntax! Burn it!</li>
             </ul>
-            <article>
-              As a Rails developer, how much you love or hate AR is dependant on the age of your fixie. 
-            </article>
+            <aside class="notes">
+              As a Rails developer, how much you love or hate AR is dependant on the age of your fixie.
+            </aside>
           </section>
           <section>
             <h2>It's OK</h2>
             <pre>
               <code>
 user = User.new(name:"Jane")
-user.save
+user.save!
 
 User.where(name:"Jane").first
               </code>
             </pre>
             <p>Simple, straight-forward, does it's job.</p>
+          </section>
+
+          <section>
+            <h2>schema.rb</h2>
+            <pre>
+              <code>
+ActiveRecord::Schema.define(version: 20131116000438) do
+
+  create_table "users", force: true do |t|
+    t.string   "name", null:false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "family", force:true do |t|
+    t.string "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+end
+              </code>
+            </pre> 
+          </section>
+          <section>
+            <h2>Create Migration</h2>
+            <pre>
+              rails g migration AddEmailAndFamilyToUsers email:string family:references
+              <code>
+# db/migrate/20131120045647_add_email_and_family_to_users.rb
+class AddEmailAndFamilyToUsers < ActiveRecord::Migration
+  def change
+    add_column :users, :email, :string
+    add_reference :users, :family, index: true
+  end
+end
+              </code>
+              rake db:migrate db:test:prepare
+            </pre>
+          </section>
+          <section>
+            <h2>Arel</h2>
+            <pre>
+              <code>
+                users = Arel::Table.new(:users)
+                query = users.where(users[:name].eq("Jane"))
+                query.to_sql
+              </code>
+              "SELECT FROM "users"  WHERE "users"."name" = 'Jane'"
+            </pre>
+            <aside class="notes">
+              Just like LINQ, without the GUI
+            </aside>
           </section>
           <section>
             <h2>Alternatives</h2>
@@ -192,8 +257,12 @@ User.where(name:"Jane").first
               <li><a href="https://github.com/TalentBox/sequel-rails">Sequel</a></li>
               <li><a href="https://github.com/rom-rb/rom">ROM (Formerly DataMapper2)</a></li>
             </ul>
+            <aside class="notes">
+              Sequel is extremely close to Active Record in terms of syntax, however has been built with much more emphasis on performance.
+              ROM is a new one but will be built much in the same manner as Datamapper was, which is essentially the same idea as Contexts in .NET EF
+            </aside>
           </section>
-          <section>
+<!--           <section>
             <h2>Sequel</h2>
             <ul>
               <li><a href="http://merbist.com/2012/02/23/quick-dive-into-ruby-orm-object-initialization/">More performance minded than AR</a></li>
@@ -228,18 +297,17 @@ jane = env[:users].restrict(name: 'Jane').one
                       <li class="fragment">MongoMapper, Mongoid (AR Compliant)</li>
                     </ul>
                   <li class="fragment"><a href="http://www.neo4j.org/develop/ruby">Neo4j</a></li>
-                  <li class="fragment">Couch</li>
                 </ul>
               </li>
             </ul>
-          </section>
+          </section> -->
         </section>
 
         <section>
           <section>
             <h2>Performance: Threading and the GIL</h2>
             <p>
-              So there's this one little fact... <span class="fragment">MRI Ruby doesn't do multi-threads.</span>
+              So there's this one little fact... <span class="fragment">MRI doesn't do multi-threading.</span>
             </p>
           </section>
 
@@ -248,9 +316,10 @@ jane = env[:users].restrict(name: 'Jane').one
             <ul>
               <li>More than 1 Ruby.</li>
               <li class="fragment">JRuby</li>
+              <li class="fragment">Rubinius</li>
             </ul>
             <aside class="notes">
-              There's MRI( Matz Ruby Interpreter), JRuby runs on the Java Virtual Machine
+              There's MRI( Matz Ruby Interpreter), JRuby runs on the Java Virtual Machine, Rubinius is a reimplementation of Ruby supporting proper threading.
             </aside>
           </section>
 
@@ -260,8 +329,17 @@ jane = env[:users].restrict(name: 'Jane').one
               <img src="images/net-joke.png">
             </div>
             <p class="fragment">
-              No real options. All boils down to the same CLR VM
+              All boils down to the same CLR
             </p>
+          </section>
+
+          <section>
+            <h2>Where's the real cost in development?</h2>
+            <ul>
+              <li>Developers cost way more than hardware.</li>
+              <li>You can build applications quicker, more streamlined, no code behind assembly files.</li>
+              <li>If you're chops are up to the task, without leaving the same terminal.</li>
+            </ul>
           </section>
 
           <section>
@@ -269,17 +347,16 @@ jane = env[:users].restrict(name: 'Jane').one
             <ul>
               <li>CDN Support built into framework</li>
               <li>Turbolinks</li>
-              <li>Remove the views.</li>
+              <li>Rails-API</li>
+              <li>Open platform, open tools.</li>
             </ul>
+            <aside class="notes">
+              Being open source opens the world with possibilities for what could be, not what is or what's coming next.
+            </aside>
           </section>
-
           <section>
-            <h2>Where's the real cost in development?</h2>
-            <ul>
-              <li>Developers, who in essence are people.</li>
-              <li>You can build applications quicker, more streamlined.</li>
-              <li>If you're chops are up to the task, without leaving the same terminal.</li>
-            </ul>
+            <h2>You can do anything you want in Rails</h2>
+            <img class="fragment" src="images/microsoft-communism.jpg">
           </section>
         </section>
 
@@ -294,41 +371,63 @@ jane = env[:users].restrict(name: 'Jane').one
           <section> 
             <h2>Ok fine that was mildly loaded.</h2>
             <ul>
-              <li>Built open on all fronts.</li>
+              <li>As free as you're willing to make it.</li>
               <li>Swap and play.</li>
-              <li class="fragment">Options... my god the options.
+              <li class="fragment">Editors... my god the options.
                 <ul>
-                  <li>Don't like VI? Use Emacs.</li>
-                  <li>Don't like Emacs? Use Sublime or Text Mate</li>
-                  <li>I need the IDE look! Use RubyMine</li>
+                  <li class="fragment">Don't like VI? Use Emacs.</li>
+                  <li class="fragment">Don't like Emacs? Use Sublime or Text Mate</li>
+                  <li class="fragment">I need the IDE look! Use RubyMine</li>
                 </ul>
               </li>
-
             </ul>
           </section>
           <section>
-            <h2>I like IDEs!!11!1</h2>
+            <h2><a href="http://www.jetbrains.com/ruby/">RubyMine</a></h2>
             <div class="fragment">
-              <h3><a href="http://www.jetbrains.com/ruby/">RubyMine</a></h3>
               <img src="images/darcula.png">
             </div>
+            <aside class="notes">
+              It's got everything, since the last time I tried it which was a couple years ago. RSpec, Minitest integration. Code completion as well as can be expected. Even RubyMotion support if you're doing a iOS application.
+            </aside>
           </section>
           <section>
             <h2>What about server costs?</h2>
-            <p>Linux = Cheaper</p>
+            <p class="fragment">Linux = Cheaper</p>
+            <aside class="notes">
+              Every hosting service that I know of (exp. of AppHarbor) support Linux VM's, Linux is inherantly cheaper than Windows to build and maintain. On Azure it is ~66% the cost to host a Linux VM of decent performance.
+            </aside>
           </section>
           <section> 
             <h2>With Windows</h2>
-            <ul>
-              <li>Would you like a GUI with that?</li>
-            </ul>
-            <img class="fragment" src="images/clippy.png" style="width:200px; float:right;">
+            <div class="fragment">
+              <ul>
+                <li>Would you like a GUI with that?</li>
+              </ul>
+              <img src="images/clippy.png" style="width:200px; float:right;">
+            </div>
+            <aside class="notes">
+              Ok fine, no one wants to remember clippy. But this illustrates a fundamental difference between the two frameworks. What can be accomplished with trivial text editing is ofuscated beneath a wash of windows and wizards. And when things go wrong. 
+            </aside>
+          </section>
+          <section>
+            <h2>JRuby</h2>
+            <p>
+              1 hour to port a medium sized application over while learning.
+            </p>
+            <p>
+              Huge performance increases without signifigant change to code-base.
+            </p>
+
+            <aside class="notes">
+              Specs passing.
+            </aside>
           </section>
         </section>
 
         <section>
           <section>
-            <h2>Editor Templating vs. Scaffolding</h2>
+            <h2>Editor Templating vs. Formtastic</h2>
           </section>
           <section>
             <h2>On Rails: Options</h2>
@@ -389,8 +488,8 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
               </code>
             </pre>
           </section>
-          <section>
-            <h2>Once again options...</h2>
+<!--           <section>
+            <h2>Formtastic: Once again options...</h2>
             <h3>Or with <a href="http://foundation.zurb.com/">Zurb Foundation</a></h3>
             <pre>
               <a href="https://github.com/aliang/formtastic-zurb-foundation">gem 'formtastic-zurb-foundation'</a>
@@ -414,7 +513,7 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
                 *= require topcoat/mobile-light
               </code>
             </pre>
-          </section>
+          </section> -->
 
         </section>
 
@@ -440,6 +539,8 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
 
         // Optional libraries used to extend on reveal.js
         dependencies: [
+          { src: 'socket.io/socket.io.js', async: true },
+          { src: 'plugin/notes-server/client.js', async: true },
           { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
           { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
           { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
